@@ -9,6 +9,10 @@ export const C = {
   navCta: 'Trova il tuo programma',
 
   heroKicker: 'Preparazione atletica giovanile',
+  heroSlash: '/ Allena oggi',
+  heroWord: 'Atleti.',
+  heroSide: 'Di domani',
+  heroPhoto: '[Foto: giovane atleta in azione]',
   heroTitle: ['Allena oggi', 'l’atleta', 'di domani'],
   heroText: 'Programmi di forza, velocità e prevenzione degli infortuni pensati per chi sta ancora crescendo. Ogni settimana sai cosa fare, come farlo e perché.',
   heroCta: 'Scegli il programma',
@@ -29,10 +33,14 @@ export const C = {
   },
 
   manifesto: 'Non alleniamo per una stagione. Costruiamo atleti più forti, più veloci e più resistenti agli infortuni, un anno dopo l’altro, con carichi adatti alla loro età.',
-  photoBand: '[Foto o video: allenamento di gruppo]',
+  photoBand: '[Foto: allenamento di gruppo]',
+  marquee: ['Forza', 'Velocità', 'Prevenzione', 'Crescita', 'Metodo OTS'],
 
   methodTitle: 'Il metodo OTS',
-  methodText: 'Quattro basi che lavorano insieme. Ognuna ha il suo colore, lo stesso che trovi nei programmi e nell’app.',
+  methodText: 'Quattro basi che lavorano insieme, in ogni programma e in ogni seduta dell’app.',
+  methodHead: ['Dalla base', 'Al campo'],
+  methodWords: ['Il', 'Metodo'],
+  manifestoHot: ['forti,', 'veloci', 'infortuni,', 'età.'],
   pillars: [
     { name: 'Forza', color: 'red', text: 'Una base solida, costruita con la tecnica prima del carico. I pesi crescono solo quando il movimento è pulito.', detail: 'Squat, spinte, trazioni, salti' },
     { name: 'Velocità e agilità', color: 'blue', text: 'Scatto, frenata e cambi di direzione allenati con metodo, perché in partita la velocità serve in tutte le direzioni.', detail: 'Partenze, accelerazioni, cambi di direzione' },
