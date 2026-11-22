@@ -8,9 +8,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const finePointer = window.matchMedia('(pointer: fine)').matches;
+const wide = () => window.matchMedia('(min-width: 1025px)').matches;
 const SPRING = { type: 'spring', bounce: 0.2, visualDuration: 0.4 };
 const SNAP = { type: 'spring', bounce: 0, visualDuration: 0.3 };
-const ACCENT = { red: 'orange', blue: 'blue', yellow: 'orange', green: 'blue' };
 const CYCLE = ['orange', 'blue'];
 
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
@@ -20,16 +20,13 @@ const $$ = (s, el = document) => Array.from(el.querySelectorAll(s));
 
 const tick = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>';
 
-/* Ribbon sets: a black band with orange and blue lines running alongside it, as in the reference. */
+/* Ribbon sets: a black band with orange and blue lines running alongside it. */
 const RIBBONS = {
-  hero: { vb: '0 0 600 700', layers: [
-    { d: 'M0,0 H200 C150,80 80,160 0,200 Z', fill: true },
-    { d: 'M214,-12 C160,80 86,168 -12,214', k: 'b', w: 9 },
-    { d: 'M236,-12 C178,92 98,186 -12,236', k: 'o', w: 9 },
-    { d: 'M250,-80 C270,190 430,380 700,430', k: 'k', w: 120 },
-    { d: 'M250,-80 C270,190 430,380 700,430', k: 'o', w: 11, t: [-50, 68] },
-    { d: 'M250,-80 C270,190 430,380 700,430', k: 'b', w: 11, t: [-70, 92] },
-    { d: 'M250,-80 C270,190 430,380 700,430', k: 'b', w: 7, t: [52, -64] }
+  hero: { vb: '0 0 1200 800', layers: [
+    { d: 'M-60,400 C220,260 420,540 760,360 S1120,140 1290,220', k: 'k', w: 48 },
+    { d: 'M-60,400 C220,260 420,540 760,360 S1120,140 1290,220', k: 'o', w: 10, t: [0, -48] },
+    { d: 'M-60,400 C220,260 420,540 760,360 S1120,140 1290,220', k: 'b', w: 10, t: [0, -66] },
+    { d: 'M-60,400 C220,260 420,540 760,360 S1120,140 1290,220', k: 'b', w: 6, t: [0, 48] }
   ] },
   stage: { vb: '0 0 600 600', layers: [
     { d: 'M-40,420 C120,300 300,520 640,180', k: 'k', w: 90 },
@@ -37,15 +34,14 @@ const RIBBONS = {
     { d: 'M-40,420 C120,300 300,520 640,180', k: 'b', w: 10, t: [0, -84] },
     { d: 'M-40,420 C120,300 300,520 640,180', k: 'b', w: 6, t: [0, 62] }
   ] },
-  pillar: { vb: '0 0 400 400', layers: [
-    { d: 'M440,170 C300,180 200,280 180,440', k: 'k', w: 64 },
-    { d: 'M440,170 C300,180 200,280 180,440', k: 'c', w: 8, t: [-34, -40] },
-    { d: 'M440,170 C300,180 200,280 180,440', k: 'x', w: 8, t: [-50, -58] }
-  ] },
   card: { vb: '0 0 400 500', layers: [
     { d: 'M-20,380 C100,330 220,420 420,300', k: 'k', w: 60 },
     { d: 'M-20,380 C100,330 220,420 420,300', k: 'o', w: 7, t: [0, -40] },
     { d: 'M-20,380 C100,330 220,420 420,300', k: 'b', w: 7, t: [0, -54] }
+  ] },
+  board: { vb: '0 0 1200 700', layers: [
+    { d: 'M-40,640 C300,560 520,700 820,560 S1160,420 1260,460', k: 'o', w: 6 },
+    { d: 'M-40,662 C300,582 520,722 820,582 S1160,442 1260,482', k: 'b', w: 6 }
   ] },
   wide: { vb: '0 0 1200 500', layers: [
     { d: 'M700,-40 C760,160 900,300 1260,330', k: 'k', w: 130 },
@@ -60,26 +56,38 @@ function ribbons(name, cls = '') {
   const r = RIBBONS[name];
   const out = r.layers.map((l) => {
     const t = l.t ? ` transform="translate(${l.t[0]} ${l.t[1]})"` : '';
-    if (l.fill) return `<path class="rb-fill" d="${l.d}"${t}/>`;
-    const k = l.k === 'c' ? 'style="stroke:var(--c)"' : l.k === 'x' ? 'style="stroke:var(--x)"' : `class="rb-${l.k}"`;
-    return `<path ${k} data-draw d="${l.d}" stroke-width="${l.w}" pathLength="1"${t}/>`;
+    return `<path class="rb-${l.k}" data-draw d="${l.d}" stroke-width="${l.w}" pathLength="1"${t}/>`;
   }).join('');
   return `<svg class="ribbons ${cls}" viewBox="${r.vb}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">${out}</svg>`;
 }
 
-const cornerMark = `<svg class="corner-mark" viewBox="0 0 64 44" aria-hidden="true"><path d="M10 44 L26 0 h10 L20 44z" fill="#F7924A"/><path d="M24 44 L40 0 h10 L34 44z" fill="#41AEF2"/><path d="M38 44 L54 0 h10 L48 44z" fill="#08090A"/></svg>`;
-const logo = (tag = 'a', extra = '') => `<${tag} ${tag === 'a' ? 'href="#top"' : ''} class="logo" ${extra}>OT<span class="o">S</span><span class="dot" aria-hidden="true"></span></${tag}>`;
-const photo = (label) => `<div class="photo"></div><span class="photo-label">${esc(label)}</span>`;
+const cornerMark = '<svg class="corner-mark" viewBox="0 0 64 44" aria-hidden="true"><path d="M10 44 L26 0 h10 L20 44z" fill="#F7924A"/><path d="M24 44 L40 0 h10 L34 44z" fill="#41AEF2"/><path d="M38 44 L54 0 h10 L48 44z" fill="#08090A"/></svg>';
+const athlete = '<svg viewBox="0 0 100 160" aria-hidden="true"><circle cx="52" cy="18" r="12" fill="#08090A"/><path d="M34 36 h34 l10 52 -10 2 -6 -30 -2 40 8 58 h-14 l-8 -50 -6 50 h-14 l6 -60 -2 -38 -8 28 -10 -2z" fill="#08090A"/><circle cx="84" cy="96" r="11" fill="#08090A"/></svg>';
+const logo = (tag = 'a', extra = '') => `<${tag} ${tag === 'a' ? 'href="#top"' : ''} class="logo" ${extra}>OT<span class="s">S</span><span class="dot" aria-hidden="true"></span></${tag}>`;
+const photo = (label) => `<div class="photo"></div>${label ? `<span class="photo-label">${esc(label)}</span>` : ''}`;
+const chars = (word) => list([...word], (c) => `<span class="ch paper">${esc(c)}</span>`);
+
+function manifestoHtml() {
+  const hot = C.manifestoHot.flatMap((h) => h.split(' '));
+  return list(C.manifesto.split(' '), (w) => {
+    const i = hot.indexOf(w);
+    if (i !== -1) hot.splice(i, 1);
+    return `<span class="wd${i !== -1 ? ' hot' : ''}">${esc(w)}</span> `;
+  });
+}
 
 function render() {
-  const tickerItems = list([0, 1], () => list(C.pillars, (p) => `<span style="--c:var(--${ACCENT[p.color]})">${esc(p.name)}</span>`));
+  const half = Math.ceil(C.nav.length / 2);
+  const ticker = list([0, 1], () => list(C.pillars, (p) => `<span>${esc(p.name)}</span>`));
+  const line = list([0, 1, 2, 3], () => `<span>${esc(C.methodText)}</span><span>${esc(C.manifesto)}</span>`);
   return `
 <div class="progress" aria-hidden="true"></div>
 <header class="nav">
   <div class="wrap">
+    <nav class="nav-side" aria-label="Principale">${list(C.nav.slice(0, half), (l) => `<a href="${l.href}">${esc(l.label)}</a>`)}</nav>
     ${logo('a', 'aria-label="OTS, torna all’inizio"')}
-    <nav class="links" aria-label="Principale">
-      ${list(C.nav, (l) => `<a href="${l.href}">${esc(l.label)}</a>`)}
+    <nav class="nav-side right" aria-label="Secondaria">
+      ${list(C.nav.slice(half), (l) => `<a href="${l.href}">${esc(l.label)}</a>`)}
       <a href="#login" data-login>${esc(C.login)}</a>
       <a href="#quiz" class="btn btn-orange">${esc(C.navCta)}</a>
     </nav>
@@ -97,33 +105,66 @@ function render() {
 </div>
 
 <main>
-  <section id="top" class="hero">
+  <section id="top" class="hero" aria-labelledby="hero-title">
     <div class="wrap">
-      <div class="frame">
-        <div class="frame-copy">
-          <p class="kicker">${esc(C.heroKicker)}</p>
-          <h1 class="display d1">${list(C.heroTitle, (w) => `<span class="ln"><span>${esc(w)}</span></span>`)}</h1>
-          <p class="lead">${esc(C.heroText)}</p>
-          <div class="actions">
-            <a href="#programmi" class="btn btn-orange">${esc(C.heroCta)}</a>
-            <a href="#quiz" class="btn btn-outline">${esc(C.heroCta2)}</a>
-          </div>
-          <div class="or" aria-hidden="true">OTS</div>
-          <div class="stats">${list(C.heroStats, (s) => `<div class="stat"><b data-count="${esc(s.n)}">${esc(s.n)}</b><span>${esc(s.l)}</span></div>`)}</div>
+      <div class="hero-frame">
+        ${photo('')}
+        <span class="photo-label hero-photo-label">${esc(C.heroPhoto)}</span>
+        <p class="slash hero-tag">${esc(C.heroTag)}</p>
+        <h1 id="hero-title" class="hero-word" aria-label="${esc(C.heroTitle.join(' '))}"><span aria-hidden="true">${chars(C.heroWord)}</span></h1>
+        ${ribbons('hero')}
+        <span class="hero-side" aria-hidden="true">${esc(C.heroSide)}</span>
+        ${cornerMark}
+      </div>
+      <div class="hero-under">
+        <p class="lead">${esc(C.heroText)}</p>
+        <div class="actions">
+          <a href="#programmi" class="btn btn-orange">${esc(C.heroCta)}</a>
+          <a href="#quiz" class="btn btn-outline">${esc(C.heroCta2)}</a>
         </div>
-        <div class="frame-photo">
-          ${photo(C.heroPhoto)}
-          ${ribbons('hero')}
-          ${cornerMark}
-        </div>
+        <div class="stats">${list(C.heroStats, (s) => `<div class="stat"><b data-count="${esc(s.n)}">${esc(s.n)}</b><span>${esc(s.l)}</span></div>`)}</div>
       </div>
     </div>
   </section>
 
-  <div class="ticker" aria-hidden="true"><div class="ticker-track">${tickerItems}</div></div>
+  <div class="ticker" aria-hidden="true"><div class="ticker-track">${ticker}</div></div>
+
+  <section id="metodo" class="intro" aria-labelledby="intro-title">
+    <div class="wrap">
+      <h2 id="intro-title" class="intro-stack">
+        <span class="display intro-w1">${esc(C.methodWords[0])}</span>
+        <span class="intro-card" aria-hidden="true">${photo(C.methodPhoto)}${ribbons('card')}</span>
+        <span class="display intro-w2 paper">${esc(C.methodWords[1])}</span>
+      </h2>
+      <div class="intro-copy">
+        <p class="slash">/ ${esc(C.methodTitle)}</p>
+        <p class="lead">${esc(C.methodText)}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillars" aria-label="Le quattro basi">
+    <div class="wrap">
+      <div class="board">
+        <div class="board-head" aria-hidden="true">
+          <span class="display">${esc(C.pillarsHead[0])}</span><span class="sep">/</span><span class="display o">${esc(C.pillarsHead[1])}</span>
+        </div>
+        <div class="board-line" aria-hidden="true"><div class="board-line-track">${line}</div></div>
+        <div class="board-body">
+          <div class="board-detail" aria-live="polite"></div>
+          <ul class="plist">${list(C.pillars, (p, i) => `<li><button aria-pressed="${i === 1}" data-p="${i}">${esc(p.name)}</button></li>`)}</ul>
+        </div>
+        ${ribbons('board')}
+        <div class="float-card" aria-hidden="true">${photo('')}<div class="tint"></div></div>
+      </div>
+    </div>
+  </section>
 
   <section class="manifesto" aria-label="Il nostro approccio">
-    <div class="wrap"><p>${list(C.manifesto.split(' '), (w) => `<span class="wd">${esc(w)}</span> `)}</p></div>
+    <div class="wrap">
+      <p>${manifestoHtml()}</p>
+      <div class="m-card" aria-hidden="true">${photo('')}${athlete}</div>
+    </div>
   </section>
 
   <section class="app-sec" aria-labelledby="app-title">
@@ -144,30 +185,10 @@ function render() {
         </div>
       </div>
       <div>
-        <h2 id="app-title" class="display d2" data-reveal>${esc(C.appTitle)}</h2>
+        <p class="slash" data-reveal>/ App OTS</p>
+        <h2 id="app-title" class="display d2" style="margin-top:18px" data-reveal>${esc(C.appTitle)}</h2>
         <p class="lead" style="margin-top:22px" data-reveal>${esc(C.appText)}</p>
-        <ul class="features">${list(C.appFeatures, (f, i) => `<li data-reveal><i style="--c:var(--${CYCLE[i % 2]})"></i>${esc(f)}</li>`)}</ul>
-      </div>
-    </div>
-  </section>
-
-  <section id="metodo" class="method">
-    <div class="wrap method-head">
-      <h2 class="display d2" data-reveal>${esc(C.methodTitle)}</h2>
-      <p class="lead" data-reveal>${esc(C.methodText)}</p>
-    </div>
-    <div class="rail-pin">
-      <div class="rail">
-        ${list(C.pillars, (p, i) => {
-          const c = ACCENT[p.color];
-          return `
-        <article class="pillar" style="--c:var(--${c});--x:var(--${c === 'orange' ? 'blue' : 'orange'})">
-          ${ribbons('pillar')}
-          <span class="num">0${i + 1} / 0${C.pillars.length}</span>
-          <h3 class="display d2">${esc(p.name)}</h3>
-          <div class="body"><p>${esc(p.text)}</p><span class="detail">${esc(p.detail)}</span></div>
-        </article>`;
-        })}
+        <ul class="features">${list(C.appFeatures, (f, i) => `<li data-reveal><i>0${i + 1}</i>${esc(f)}</li>`)}</ul>
       </div>
     </div>
   </section>
@@ -179,10 +200,10 @@ function render() {
         <p class="lead" data-reveal>${esc(C.progText)}</p>
       </div>
       <div class="cards">
-        ${list(C.programs, (p) => `
-        <article class="prog${p.featured ? ' featured' : ''}" data-card>
+        ${list(C.programs, (p, i) => `
+        <article class="prog${p.featured ? ' featured' : ''}" data-card data-tilt="${[-2.5, 0, 2.5][i]}">
           <div class="top"><span>${esc(p.level)}</span>${p.featured ? `<span class="badge">${esc(C.featured)}</span>` : ''}</div>
-          <h3 class="display d3">${esc(p.name)}</h3>
+          <h3 class="display">${esc(p.name)}</h3>
           <p style="margin:0;color:var(--muted)">${esc(p.desc)}</p>
           <ul>${list(p.features, (f) => `<li>${esc(f)}</li>`)}</ul>
           <div class="price">${esc(p.price)}</div>
@@ -219,9 +240,9 @@ function render() {
         <p class="lead" data-reveal>${esc(C.teamText)}</p>
       </div>
       <div class="members">
-        ${list(C.team, (m) => `
+        ${list(C.team, (m, i) => `
         <div class="member" data-card>
-          <div class="pic">${photo(C.photo)}${ribbons('card')}</div>
+          <div class="pic" data-tilt="${[-3, 2, -1.5][i]}">${photo(C.photo)}${ribbons('card')}</div>
           <div class="name">${esc(m.name)}</div>
           <div class="role">${esc(m.role)}</div>
         </div>`)}
@@ -231,7 +252,7 @@ function render() {
 
   <section class="quotes">
     <div class="wrap">
-      <h2 class="display d2" style="max-width:16ch" data-reveal>${esc(C.quotesTitle)}</h2>
+      <h2 class="display d2" style="max-width:12ch" data-reveal>${esc(C.quotesTitle)}</h2>
       <div class="qcards">
         ${list(C.quotes, (q, i) => `<figure class="qcard" data-card style="--c:var(--${CYCLE[i % 2]})"><blockquote>${esc(q.text)}</blockquote><figcaption>${esc(q.who)}</figcaption></figure>`)}
       </div>
@@ -275,7 +296,7 @@ function render() {
         <div class="photo"></div>
         ${ribbons('wide')}
         <div class="cta-row">
-          <h2 class="display d2">${esc(C.ctaTitle)}</h2>
+          <h2 class="display">${esc(C.ctaTitle)}</h2>
           <a href="#programmi" class="btn btn-orange">${esc(C.ctaBtn)}</a>
         </div>
       </div>
@@ -284,6 +305,7 @@ function render() {
 </main>
 
 <footer>
+  <div class="wordmark" aria-hidden="true"><span class="paper">OTS</span></div>
   <div class="wrap foot">
     ${logo('span')}
     <span>© 2026 OTS. ${esc(C.rights)}</span>
@@ -304,14 +326,14 @@ function render() {
       <label class="lbl" for="login-pass">${esc(C.loginPass)}</label>
       <input id="login-pass" class="field" type="password" required autocomplete="current-password" placeholder="${esc(C.loginPassPh)}">
       <div class="login-row">
-        <label class="check-lbl"><input type="checkbox">${esc(C.loginRemember)}</label>
+        <label class="check-lbl"><input type="checkbox" id="login-remember">${esc(C.loginRemember)}</label>
         <a href="#login" class="link">${esc(C.loginForgot)}</a>
       </div>
       <button class="btn btn-orange btn-block" type="submit">${esc(C.loginBtn)}</button>
       <p class="form-msg" id="login-msg" aria-live="polite"></p>
       <p class="login-foot">${esc(C.loginNo)} <a href="#programmi" class="link" data-close>${esc(C.loginBuy)}</a></p>
     </form>
-    <div class="login-photo">${photo(C.heroPhoto)}${ribbons('hero')}${cornerMark}</div>
+    <div class="login-photo">${photo('')}<div class="big paper" aria-hidden="true">OTS</div>${ribbons('hero')}${cornerMark}</div>
     <button class="icon-btn login-close" type="button" aria-label="${esc(C.close)}">×</button>
   </div>
 </div>`;
@@ -319,10 +341,27 @@ function render() {
 
 document.getElementById('app').innerHTML = render();
 
-const drawIn = (svg) => $$('[data-draw]', svg);
+const drawIn = (el) => $$('[data-draw]', el);
 function primeDraw(els) {
   if (reduce) return;
   for (const p of els) { p.style.strokeDasharray = '1'; p.style.strokeDashoffset = '1'; }
+}
+
+/* Size a single-line word so it spans its container exactly. */
+function fit(text, box, ratio = 1, pad = 0) {
+  const run = () => {
+    const els = [text, ...text.querySelectorAll('*')];
+    const saved = els.map((e) => e.style.fontWeight);
+    for (const e of els) e.style.fontWeight = '900';
+    text.style.fontSize = '100px';
+    const w = text.getBoundingClientRect().width;
+    els.forEach((e, i) => { e.style.fontWeight = saved[i]; });
+    const avail = (box.clientWidth - pad * 2) * ratio;
+    text.style.fontSize = `${Math.floor((100 * avail) / Math.max(1, w))}px`;
+  };
+  run();
+  window.addEventListener('resize', run);
+  if (document.fonts) document.fonts.ready.then(() => { run(); ScrollTrigger.refresh(); });
 }
 
 function setupNav() {
@@ -342,7 +381,7 @@ function setupNav() {
   nav.addEventListener('focusin', () => { hidden = false; animate(nav, { y: '0%' }, { duration: 0 }); });
   scroll(animate($('.progress'), { scaleX: [0, 1] }, { ease: 'linear' }));
 
-  const links = $$('.links a[href^="#"]:not(.btn):not([data-login])');
+  const links = $$('.nav-side a[href^="#"]:not(.btn):not([data-login])');
   for (const a of links) {
     const sec = $(a.getAttribute('href'));
     if (!sec) continue;
@@ -356,31 +395,136 @@ function setupNav() {
 function setupMenu() {
   const btn = $('.menu-btn');
   const sheet = $('#sheet');
-  const close = $('.sheet-close');
   const open = () => {
     sheet.hidden = false;
     btn.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
     if (!reduce) {
       animate(sheet, { clipPath: ['inset(0 0 100% 0 round 0 0 32px 32px)', 'inset(0 0 0% 0 round 0 0 0px 0px)'] }, { duration: 0.5, ease: [0.2, 0.7, 0.2, 1] });
-      animate($$('.sheet nav a'), { y: [36, 0], opacity: [0, 1] }, { delay: stagger(0.05, { startDelay: 0.15 }), ...SPRING });
+      animate($$('.sheet nav a'), { y: [48, 0], opacity: [0, 1] }, { delay: stagger(0.05, { startDelay: 0.15 }), ...SPRING });
       const paths = drawIn(sheet);
       primeDraw(paths);
       animate(paths, { strokeDashoffset: [1, 0] }, { duration: 1, delay: stagger(0.06, { startDelay: 0.2 }), ease: 'easeInOut' });
     }
     $('.sheet nav a').focus();
   };
-  const shut = async () => {
+  const shut = async (instant) => {
     btn.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
-    if (!reduce) await animate(sheet, { clipPath: 'inset(0 0 100% 0 round 0 0 32px 32px)' }, { duration: 0.35, ease: 'easeIn' });
+    if (!reduce && !instant) await animate(sheet, { clipPath: 'inset(0 0 100% 0 round 0 0 32px 32px)' }, { duration: 0.35, ease: 'easeIn' });
     sheet.hidden = true;
-    btn.focus();
+    if (!instant) btn.focus();
   };
   btn.addEventListener('click', open);
-  close.addEventListener('click', shut);
-  for (const a of $$('a', sheet)) a.addEventListener('click', () => { if (!a.hasAttribute('data-login')) shut(); else { sheet.hidden = true; btn.setAttribute('aria-expanded', 'false'); } });
+  $('.sheet-close').addEventListener('click', () => shut());
+  for (const a of $$('a', sheet)) a.addEventListener('click', () => shut(a.hasAttribute('data-login')));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !sheet.hidden) shut(); });
+}
+
+function countUp(el) {
+  const m = el.dataset.count.match(/^(\d+)(.*)$/);
+  if (!m || reduce) return;
+  const target = Number(m[1]);
+  el.textContent = `0${m[2]}`;
+  animate(0, target, { duration: 1.2, ease: [0.2, 0.7, 0.2, 1], onUpdate: (v) => { el.textContent = `${Math.round(v)}${m[2]}`; } });
+}
+
+function setupHero() {
+  const frame = $('.hero-frame');
+  const word = $('.hero-word');
+  fit($('span', word), frame, 1, Math.min(28, Math.max(12, frame.clientWidth * 0.02)));
+  const svg = $('.ribbons', frame);
+  const paths = drawIn(svg);
+  const pic = $('.photo', frame);
+  if (reduce) return;
+
+  primeDraw(paths);
+  const letters = $$('.ch', word);
+  const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
+  intro
+    .from(frame, { opacity: 0, y: 40, scale: 0.97, duration: 1, ease: 'expo.out' }, 0)
+    .from(pic, { scale: 1.2, duration: 2.2, ease: 'expo.out' }, 0)
+    .from(letters, { yPercent: 105, duration: 1, stagger: 0.06 }, 0.25)
+    .fromTo(letters, { fontWeight: 300 }, { fontWeight: 900, duration: 1.2, stagger: 0.06, ease: 'expo.inOut' }, 0.45)
+    .to(paths, { strokeDashoffset: 0, duration: 1.6, stagger: 0.1, ease: 'power3.inOut' }, 0.7)
+    .from(['.hero-tag', '.hero-side', '.hero-photo-label'], { opacity: 0, y: 12, duration: 0.6, stagger: 0.08 }, 1)
+    .from('.corner-mark path', { yPercent: 100, opacity: 0, duration: 0.6, stagger: 0.08, ease: 'back.out(2)' }, 1.1)
+    .from(['.hero-under .lead', '.hero-under .actions > *', '.stat'], { opacity: 0, y: 20, duration: 0.7, stagger: 0.06 }, 1)
+    .add(() => $$('.hero [data-count]').forEach(countUp), 1.2);
+
+  if (finePointer) {
+    frame.addEventListener('pointermove', (e) => {
+      const r = frame.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      animate(svg, { x: x * -30, y: y * -18 }, { type: 'spring', bounce: 0, visualDuration: 0.6 });
+      animate(word, { x: x * 14 }, { type: 'spring', bounce: 0, visualDuration: 0.8 });
+      animate(pic, { x: x * 10, y: y * 8 }, { type: 'spring', bounce: 0, visualDuration: 0.8 });
+    });
+    frame.addEventListener('pointerleave', () => { animate([svg, word, pic], { x: 0, y: 0 }, SPRING); });
+  }
+
+  gsap.to(word, { yPercent: 18, ease: 'none', scrollTrigger: { trigger: frame, start: 'top top', end: 'bottom top', scrub: true } });
+  gsap.to(pic, { yPercent: 10, ease: 'none', scrollTrigger: { trigger: frame, start: 'top top', end: 'bottom top', scrub: true } });
+}
+
+function setupIntro() {
+  const card = $('.intro-card');
+  const paths = drawIn(card);
+  if (reduce) return;
+  primeDraw(paths);
+  const st = { trigger: '.intro', start: 'top bottom', end: 'bottom top', scrub: true };
+  gsap.fromTo('.intro-w1', { xPercent: -14 }, { xPercent: 6, ease: 'none', scrollTrigger: st });
+  gsap.fromTo('.intro-w2', { xPercent: 10 }, { xPercent: -4, ease: 'none', scrollTrigger: st });
+  gsap.fromTo(card, { rotate: -11, y: 60 }, { rotate: 4, y: -30, ease: 'none', scrollTrigger: st });
+  gsap.to(paths, { strokeDashoffset: 0, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: card, start: 'top 85%', end: 'center 45%', scrub: true } });
+}
+
+function setupBoard() {
+  const board = $('.board');
+  const detail = $('.board-detail');
+  const btns = $$('.plist button');
+  const fc = $('.float-card');
+  let active = 1;
+  const show = (i, first) => {
+    active = i;
+    const p = C.pillars[i];
+    btns.forEach((b, j) => b.setAttribute('aria-pressed', String(j === i)));
+    detail.innerHTML = `<span class="num">0${i + 1} / 0${C.pillars.length}</span><p>${esc(p.text)}</p><span class="detail">${esc(p.detail)}</span>`;
+    if (!reduce && !first) animate($$(':scope > *', detail), { opacity: [0, 1], y: [16, 0] }, { delay: stagger(0.05), ...SNAP });
+  };
+  show(active, true);
+  btns.forEach((b, i) => {
+    b.addEventListener('click', () => show(i));
+    b.addEventListener('focus', () => { if (i !== active) show(i); });
+    if (finePointer) b.addEventListener('pointerenter', () => { if (i !== active) show(i); });
+  });
+
+  const paths = drawIn(board);
+  if (reduce) return;
+  primeDraw(paths);
+  inView(board, () => { animate(paths, { strokeDashoffset: [1, 0] }, { duration: 1.6, delay: stagger(0.15), ease: 'easeInOut' }); }, { amount: 0.4 });
+  animate(btns, { opacity: 0 }, { duration: 0 });
+  inView('.plist', () => { animate(btns, { opacity: [0, 1], x: [60, 0] }, { delay: stagger(0.07), type: 'spring', bounce: 0, visualDuration: 0.7 }); }, { amount: 0.3 });
+
+  if (!finePointer) return;
+  const list = $('.plist');
+  list.addEventListener('pointerenter', () => animate(fc, { opacity: 1, scale: [0.8, 1] }, SPRING));
+  list.addEventListener('pointerleave', () => animate(fc, { opacity: 0, scale: 0.8 }, SNAP));
+  list.addEventListener('pointermove', (e) => {
+    const r = board.getBoundingClientRect();
+    const x = e.clientX - r.left - fc.offsetWidth * 1.15;
+    const y = e.clientY - r.top - fc.offsetHeight * 1.2;
+    animate(fc, { x, y, rotate: (e.movementX || 0) * 0.6 }, { type: 'spring', bounce: 0.25, visualDuration: 0.5 });
+  });
+}
+
+function setupManifesto() {
+  if (reduce) { $$('.manifesto .wd').forEach((w) => { w.style.color = w.classList.contains('hot') ? '#F7924A' : '#F3F3F4'; }); return; }
+  const st = { trigger: '.manifesto p', start: 'top 80%', end: 'bottom 45%', scrub: true };
+  const tl = gsap.timeline({ scrollTrigger: st });
+  $$('.manifesto .wd').forEach((w, i) => tl.to(w, { color: w.classList.contains('hot') ? '#F7924A' : '#F3F3F4', duration: 1, ease: 'none' }, i * 0.4));
+  gsap.fromTo('.m-card', { y: 120, rotate: -10 }, { y: -120, rotate: 12, ease: 'none', scrollTrigger: { trigger: '.manifesto', start: 'top bottom', end: 'bottom top', scrub: true } });
 }
 
 function phoneLoop() {
@@ -413,72 +557,21 @@ function phoneLoop() {
   return tl;
 }
 
-function countUp(el) {
-  const raw = el.dataset.count;
-  const m = raw.match(/^(\d+)(.*)$/);
-  if (!m || reduce) return;
-  const target = Number(m[1]);
-  const suffix = m[2];
-  el.textContent = `0${suffix}`;
-  animate(0, target, { duration: 1.2, ease: [0.2, 0.7, 0.2, 1], onUpdate: (v) => { el.textContent = `${Math.round(v)}${suffix}`; } });
-}
-
-function setupHero() {
-  const frame = $('.frame');
-  const pane = $('.frame-photo');
-  const svg = $('.ribbons', pane);
-  const paths = drawIn(svg);
-  if (reduce) return;
-
-  primeDraw(paths);
-  gsap.set('.hero h1 .ln > span', { '--wg': 200 });
-  $$('.hero h1 .ln > span').forEach((s) => { s.style.fontVariationSettings = "'wght' var(--wg, 700)"; });
-
-  const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
-  intro
-    .from(frame, { opacity: 0, y: 40, scale: 0.97, duration: 1, ease: 'expo.out' }, 0)
-    .from($('.photo', pane), { scale: 1.18, duration: 2.2, ease: 'expo.out' }, 0)
-    .from($('.rb-fill', pane), { xPercent: -30, yPercent: -30, opacity: 0, duration: 1.1 }, 0.3)
-    .to(paths, { strokeDashoffset: 0, duration: 1.5, stagger: 0.08, ease: 'power3.inOut' }, 0.3)
-    .from('.corner-mark path', { yPercent: 100, opacity: 0, duration: 0.6, stagger: 0.08, ease: 'back.out(2)' }, 1.3)
-    .from('.hero .kicker', { opacity: 0, x: -16, duration: 0.6 }, 0.2)
-    .from('.hero h1 .ln > span', { yPercent: 110, duration: 0.9, stagger: 0.08 }, 0.25)
-    .to('.hero h1 .ln > span', { '--wg': 700, duration: 1.1, stagger: 0.08, ease: 'expo.inOut' }, 0.5)
-    .from(['.hero .lead', '.hero .actions > *', '.hero .or', '.hero .stat'], { opacity: 0, y: 18, duration: 0.7, stagger: 0.06 }, 0.85)
-    .add(() => $$('.hero [data-count]').forEach(countUp), 1.1);
-
-  if (finePointer) {
-    frame.addEventListener('pointermove', (e) => {
-      const r = frame.getBoundingClientRect();
-      const x = (e.clientX - r.left) / r.width - 0.5;
-      const y = (e.clientY - r.top) / r.height - 0.5;
-      animate(svg, { x: x * -22, y: y * -16 }, { type: 'spring', bounce: 0, visualDuration: 0.6 });
-      animate($('.photo', pane), { x: x * 10, y: y * 8 }, { type: 'spring', bounce: 0, visualDuration: 0.8 });
-    });
-    frame.addEventListener('pointerleave', () => {
-      animate(svg, { x: 0, y: 0 }, SPRING);
-      animate($('.photo', pane), { x: 0, y: 0 }, SPRING);
-    });
-  }
-
-  gsap.to(svg, { yPercent: -8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
-}
-
 function setupApp() {
   const loop = phoneLoop();
   const stage = $('.stage');
   const phone = $('.phone');
-  const paths = drawIn($('.ribbons', stage));
+  const paths = drawIn(stage);
   if (reduce) return;
   primeDraw(paths);
   gsap.to(paths, { strokeDashoffset: 0, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: stage, start: 'top 85%', end: 'center 50%', scrub: true } });
   phone.style.opacity = '0';
+  let shown = false;
   inView(stage, () => {
-    animate(phone, { opacity: [0, 1], y: [80, 0], rotateX: [24, 0], rotateZ: [-5, 0] }, { type: 'spring', bounce: 0.25, visualDuration: 0.8 })
-      .then(() => loop && loop.play());
+    animate(phone, { opacity: [0, 1], y: [80, 0], rotateX: [24, 0], rotateZ: [-6, 3] }, { type: 'spring', bounce: 0.25, visualDuration: 0.8 })
+      .then(() => { shown = true; if (loop) loop.play(); });
   }, { amount: 0.35 });
-  if (loop) ScrollTrigger.create({ trigger: stage, start: 'top bottom', end: 'bottom top', onToggle: (s) => { if (phone.style.opacity === '1') s.isActive ? loop.play() : loop.pause(); } });
-
+  if (loop) ScrollTrigger.create({ trigger: stage, start: 'top bottom', end: 'bottom top', onToggle: (s) => { if (shown) s.isActive ? loop.play() : loop.pause(); } });
   if (finePointer) {
     stage.addEventListener('pointermove', (e) => {
       const r = stage.getBoundingClientRect();
@@ -491,17 +584,20 @@ function setupApp() {
 }
 
 function setupReveals() {
+  const tilted = $$('[data-tilt]');
+  const tiltOn = !reduce && wide();
+  for (const el of tilted) animate(el, { rotate: tiltOn ? Number(el.dataset.tilt) : 0 }, { duration: 0 });
   if (reduce) return;
   for (const el of $$('[data-reveal]')) {
     el.style.opacity = '0';
-    inView(el, () => { animate(el, { opacity: [0, 1], y: [28, 0] }, { type: 'spring', bounce: 0, visualDuration: 0.7 }); }, { amount: 0.4 });
+    inView(el, () => { animate(el, { opacity: [0, 1], y: [32, 0] }, { type: 'spring', bounce: 0, visualDuration: 0.7 }); }, { amount: 0.4 });
   }
   const groups = new Set($$('[data-card]').map((c) => c.parentElement));
   for (const g of groups) {
     const cards = $$(':scope > [data-card]', g);
     cards.forEach((c) => { c.style.opacity = '0'; });
     inView(g, () => {
-      animate(cards, { opacity: [0, 1], y: [48, 0] }, { delay: stagger(0.08), type: 'spring', bounce: 0.15, visualDuration: 0.7 });
+      animate(cards, { opacity: [0, 1], y: [80, 0] }, { delay: stagger(0.09), type: 'spring', bounce: 0.2, visualDuration: 0.8 });
       for (const c of cards) {
         const paths = drawIn(c);
         if (paths.length) { primeDraw(paths); animate(paths, { strokeDashoffset: [1, 0] }, { duration: 1.2, delay: stagger(0.08, { startDelay: 0.3 }), ease: 'easeInOut' }); }
@@ -512,57 +608,34 @@ function setupReveals() {
 
 function setupInteractions() {
   if (reduce) return;
-  press('.btn, .qopt, .faqbtn', (el) => {
+  press('.btn, .qopt, .faqbtn, .plist button', (el) => {
     animate(el, { scale: 0.97 }, { type: 'spring', bounce: 0, visualDuration: 0.12 });
     return () => animate(el, { scale: 1 }, { type: 'spring', bounce: 0.4, visualDuration: 0.3 });
   });
   if (!finePointer) return;
-  hover('.prog, .member .pic', (el) => {
-    animate(el, { y: -8 }, SPRING);
+  hover('[data-tilt]', (el) => {
+    animate(el, { y: -10, rotate: 0 }, SPRING);
     const paths = drawIn(el);
     if (paths.length) animate(paths, { strokeDashoffset: [1, 0] }, { duration: 0.8, delay: stagger(0.06), ease: 'easeInOut' });
-    return () => animate(el, { y: 0 }, SPRING);
+    return () => animate(el, { y: 0, rotate: wide() ? Number(el.dataset.tilt) : 0 }, SPRING);
   });
 }
 
-function setupScrollStory() {
+function setupOutro() {
+  const wm = $('.wordmark');
+  fit($('span', wm), wm, 0.96);
   if (reduce) return;
-  const words = $$('.manifesto .wd');
-  gsap.to(words, { color: '#F3F3F4', stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '.manifesto p', start: 'top 80%', end: 'bottom 45%', scrub: true } });
-
-  const mm = gsap.matchMedia();
-  mm.add('(min-width: 641px)', () => {
-    const rail = $('.rail');
-    const dist = () => Math.max(0, rail.scrollWidth - window.innerWidth);
-    const slide = gsap.to(rail, {
-      x: () => -dist(), ease: 'none',
-      scrollTrigger: { trigger: '.rail-pin', start: 'center center', end: () => `+=${dist()}`, pin: true, scrub: 0.8, invalidateOnRefresh: true }
-    });
-    $$('.pillar').forEach((p) => {
-      const paths = drawIn(p);
-      primeDraw(paths);
-      gsap.to(paths, { strokeDashoffset: 0, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: slide, start: 'left 100%', end: 'left 40%', scrub: true } });
-      gsap.fromTo($('h3', p), { fontWeight: 200 }, { fontWeight: 700, ease: 'none', scrollTrigger: { trigger: p, containerAnimation: slide, start: 'left 95%', end: 'left 45%', scrub: true } });
-    });
-  });
-  mm.add('(max-width: 640px)', () => {
-    $$('.pillar').forEach((p) => {
-      const paths = drawIn(p);
-      primeDraw(paths);
-      gsap.to(paths, { strokeDashoffset: 0, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: p, start: 'top 90%', end: 'center 50%', scrub: true } });
-    });
-  });
-
-  const qpaths = drawIn($('.quiz-photo'));
-  primeDraw(qpaths);
-  gsap.to(qpaths, { strokeDashoffset: 0, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '.quiz-frame', start: 'top 85%', end: 'top 30%', scrub: true } });
-
   const cta = $('.cta-frame');
   const cpaths = drawIn(cta);
   primeDraw(cpaths);
   gsap.to(cpaths, { strokeDashoffset: 0, stagger: 0.08, ease: 'none', scrollTrigger: { trigger: cta, start: 'top 90%', end: 'center 55%', scrub: true } });
   gsap.fromTo($('.photo', cta), { yPercent: -10, scale: 1.3 }, { yPercent: 10, ease: 'none', scrollTrigger: { trigger: cta, start: 'top bottom', end: 'bottom top', scrub: true } });
-  gsap.from('.cta-row > *', { y: 40, opacity: 0, stagger: 0.1, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: cta, start: 'top 70%' } });
+  gsap.from('.cta-row > *', { y: 60, opacity: 0, stagger: 0.1, duration: 0.9, ease: 'power3.out', scrollTrigger: { trigger: cta, start: 'top 70%' } });
+  gsap.fromTo('.wordmark span', { fontWeight: 300, yPercent: 30 }, { fontWeight: 900, yPercent: 0, ease: 'none', scrollTrigger: { trigger: 'footer', start: 'top bottom', end: 'bottom bottom', scrub: true } });
+
+  const qpaths = drawIn($('.quiz-photo'));
+  primeDraw(qpaths);
+  gsap.to(qpaths, { strokeDashoffset: 0, stagger: 0.1, ease: 'none', scrollTrigger: { trigger: '.quiz-frame', start: 'top 85%', end: 'top 30%', scrub: true } });
 }
 
 function setupQuiz() {
@@ -583,8 +656,8 @@ function setupQuiz() {
     }
     count.textContent = C.quizResult;
     const prog = C.programs[answers[1]];
-    return `<div class="qresult"><h3 tabindex="-1" style="font-size:16px;font-weight:400;color:var(--muted);margin:0">${esc(C.quizPick)}</h3>
-      <div class="big">${esc(prog.name)}</div>
+    return `<div class="qresult"><h3 tabindex="-1" style="font-family:var(--font);text-transform:none;font-size:16px;font-weight:400;color:var(--muted);margin:0">${esc(C.quizPick)}</h3>
+      <div class="big paper">${esc(prog.name)}</div>
       <p>${esc(C.quiz[1].options[answers[1]])} anni, priorità ${esc(C.quiz[2].options[answers[2]].toLowerCase())}. ${esc(C.quizNote)}</p>
       <div class="row"><a href="#programmi" class="btn btn-orange">${esc(C.heroCta)}</a><button class="btn btn-ghost qrestart">${esc(C.quizRestart)}</button></div></div>`;
   };
@@ -671,8 +744,9 @@ function setupLogin() {
       animate(dlg, { opacity: [0, 1] }, { duration: 0.2 });
       animate(card, { opacity: [0, 1], y: [40, 0], scale: [0.96, 1] }, { type: 'spring', bounce: 0.2, visualDuration: 0.45 });
       animate($$('.login-form > *', dlg), { opacity: [0, 1], y: [12, 0] }, { delay: stagger(0.03, { startDelay: 0.1 }), ...SNAP });
+      animate($('.login-photo .big', dlg), { y: ['40%', '0%'] }, { type: 'spring', bounce: 0.2, visualDuration: 0.7, delay: 0.15 });
       primeDraw(paths);
-      animate(paths, { strokeDashoffset: [1, 0] }, { duration: 1.2, delay: stagger(0.07, { startDelay: 0.15 }), ease: 'easeInOut' });
+      animate(paths, { strokeDashoffset: [1, 0] }, { duration: 1.2, delay: stagger(0.07, { startDelay: 0.25 }), ease: 'easeInOut' });
     }
     $('#login-email').focus();
   };
@@ -684,7 +758,7 @@ function setupLogin() {
     }
     dlg.hidden = true;
     document.body.style.overflow = '';
-    if (opener) opener.focus();
+    if (opener && opener.offsetParent) opener.focus();
   };
 
   for (const a of $$('[data-login]')) a.addEventListener('click', open);
@@ -720,13 +794,15 @@ function setupLogin() {
 setupNav();
 setupMenu();
 setupHero();
+setupIntro();
+setupBoard();
+setupManifesto();
 setupApp();
 setupReveals();
 setupInteractions();
-setupScrollStory();
+setupOutro();
 setupQuiz();
 setupFaq();
 setupWaitlist();
 setupLogin();
 window.addEventListener('load', () => ScrollTrigger.refresh());
-if (document.fonts) document.fonts.ready.then(() => ScrollTrigger.refresh());

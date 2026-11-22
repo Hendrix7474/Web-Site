@@ -6,6 +6,14 @@ export const C = {
     { href: '#faq', label: 'Domande' }
   ],
   login: 'Area riservata',
+
+  heroWord: 'ATLETI.',
+  heroTag: '/ Preparazione atletica giovanile',
+  heroSide: 'Allena oggi l’atleta di domani',
+  methodWords: ['Il', 'metodo'],
+  methodPhoto: '[Foto: allenamento di forza]',
+  pillarsHead: ['Quattro', 'basi'],
+  manifestoHot: ['più forti,', 'più veloci', 'infortuni,', 'un anno dopo l’altro,'],
   heroPhoto: '[Foto in bianco e nero: atleta in azione]',
   heroStats: [
     { n: '4', l: 'basi del metodo' },
