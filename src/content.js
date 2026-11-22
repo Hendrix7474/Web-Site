@@ -1,3 +1,11 @@
+// Foto: sostituisci null con il percorso di un'immagine (es. '/foto/hero.jpg') e comparirà al posto del segnaposto.
+export const photos = {
+  heroA: null,
+  heroB: null,
+  wall: null,
+  team: [null, null, null]
+};
+
 export const C = {
   nav: [
     { href: '#metodo', label: 'Metodo' },
@@ -7,40 +15,43 @@ export const C = {
   ],
   login: 'Area riservata',
   navCta: 'Trova il tuo programma',
+  menu: 'Menu',
+  close: 'Chiudi',
 
-  heroKicker: 'Preparazione atletica giovanile',
-  heroTitle: ['Allena oggi', 'l’atleta', 'di domani'],
+  heroTitle: ['Allena', 'oggi', 'l’atleta', 'di domani'],
+  heroKicker: 'Preparazione atletica giovanile. Dal campo all’app.',
+  heroTags: 'Forza. Velocità. Prevenzione. Crescita nel tempo.',
   heroText: 'Programmi di forza, velocità e prevenzione degli infortuni pensati per chi sta ancora crescendo. Ogni settimana sai cosa fare, come farlo e perché.',
   heroCta: 'Scegli il programma',
-  heroCta2: 'Fai il quiz in un minuto',
+  heroCta2: 'Quiz in un minuto',
+  scroll: 'Scorri',
 
-  app: {
-    week: 'Settimana 3',
-    day: 'Giorno 2 di 3',
-    title: 'Forza e salti',
-    rest: 'Recupero',
-    items: [
-      { name: 'Salti sul box', sets: '4 × 5' },
-      { name: 'Squat con bilanciere', sets: '3 × 8' },
-      { name: 'Sprint 10 m', sets: '6 ripetute' },
-      { name: 'Plank laterale', sets: '3 × 30 s' }
-    ],
-    done: 'completata'
-  },
+  wallRows: ['Prepara', 'zione'],
+  wallYear: '2026.',
+  wallText: 'Un metodo per atleti che crescono: carichi adatti all’età, tecnica prima del peso, progressi misurati.',
+  wallSign: 'OTS\nTraining',
 
-  manifesto: 'Non alleniamo per una stagione. Costruiamo atleti più forti, più veloci e più resistenti agli infortuni, un anno dopo l’altro, con carichi adatti alla loro età.',
-  photoBand: '[Foto o video: allenamento di gruppo]',
+  manifestoLabel: 'Il nostro approccio',
+  manifesto: 'Non alleniamo per una stagione. Costruiamo atleti più forti, più veloci e più resistenti agli infortuni, un anno dopo l’altro.',
+
+  ticker: ['Forza', 'Velocità', 'Prevenzione', 'Crescita'],
 
   methodTitle: 'Il metodo OTS',
-  methodText: 'Quattro basi che lavorano insieme. Ognuna ha il suo colore, lo stesso che trovi nei programmi e nell’app.',
+  methodText: 'Quattro basi che lavorano insieme, un anno dopo l’altro.',
+  methodLabels: ['Tecnica, carico, ritmo, recupero', 'Il metodo', 'Quattro basi'],
+  cube: {
+    top: ['Il metodo', 'OTS in', 'quattro', 'basi.'],
+    left: ['Forza', 'velocità', 'prevenzione', 'crescita'],
+    right: ['Costruiti', 'per crescere', 'anno dopo', 'anno.']
+  },
   pillars: [
-    { name: 'Forza', color: 'red', text: 'Una base solida, costruita con la tecnica prima del carico. I pesi crescono solo quando il movimento è pulito.', detail: 'Squat, spinte, trazioni, salti' },
-    { name: 'Velocità e agilità', color: 'blue', text: 'Scatto, frenata e cambi di direzione allenati con metodo, perché in partita la velocità serve in tutte le direzioni.', detail: 'Partenze, accelerazioni, cambi di direzione' },
-    { name: 'Prevenzione', color: 'yellow', text: 'Mobilità e stabilità per ginocchia, caviglie e schiena. Meno stop durante l’anno vuol dire più allenamento che conta.', detail: 'Mobilità, equilibrio, core' },
-    { name: 'Crescita nel tempo', color: 'green', text: 'Progressioni pensate per anni di sviluppo. Ogni fase prepara la successiva, senza bruciare le tappe.', detail: 'Piani per fasce d’età' }
+    { name: 'Forza', text: 'Una base solida, costruita con la tecnica prima del carico. I pesi crescono solo quando il movimento è pulito.', detail: 'Squat, spinte, trazioni, salti' },
+    { name: 'Velocità', text: 'Scatto, frenata e cambi di direzione allenati con metodo, perché in partita la velocità serve in tutte le direzioni.', detail: 'Partenze, accelerazioni, agilità' },
+    { name: 'Prevenzione', text: 'Mobilità e stabilità per ginocchia, caviglie e schiena. Meno stop durante l’anno vuol dire più allenamento che conta.', detail: 'Mobilità, equilibrio, core' },
+    { name: 'Crescita', text: 'Progressioni pensate per anni di sviluppo. Ogni fase prepara la successiva, senza bruciare le tappe.', detail: 'Piani per fasce d’età' }
   ],
 
-  progTitle: 'Scegli il percorso',
+  progTitle: ['Scegli', 'il percorso'],
   progText: 'Si acquista una volta e si segue dall’app e dall’area riservata, con il video di ogni esercizio.',
   featured: 'Il più scelto',
   buy: 'Acquista',
@@ -51,7 +62,7 @@ export const C = {
     { level: '[Fascia d’età]', name: '[Programma 3]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: false }
   ],
 
-  quizTitle: 'Non sai da dove partire?',
+  quizTitle: ['Non sai', 'da dove', 'partire?'],
   quizText: 'Tre domande e ti indichiamo il programma più adatto.',
   quiz: [
     { q: 'Chi sta compilando?', options: ['Sono un genitore', 'Sono un atleta'] },
@@ -83,7 +94,7 @@ export const C = {
   ],
 
   proTag: 'In arrivo',
-  proTitle: 'Tecnica e professionisti',
+  proTitle: ['Tecnica e', 'professionisti'],
   proText: 'Stiamo preparando percorsi per la parte tecnica e per gli atleti professionisti. Lascia la tua email e ti avvisiamo appena aprono.',
   proLabel: 'La tua email',
   proBtn: 'Avvisami',
@@ -91,7 +102,7 @@ export const C = {
   proError: 'Inserisci un indirizzo email valido, per esempio nome@email.it.',
   proDone: 'Anteprima: il modulo verrà collegato al servizio email quando il sito sarà online.',
 
-  faqTitle: 'Domande frequenti',
+  faqTitle: 'Domande',
   faq: [
     { q: 'Come ricevo il programma dopo l’acquisto?', a: 'Subito dopo il pagamento ricevi l’accesso all’area riservata e all’app, dove trovi schede e video.' },
     { q: 'Per che età sono i programmi?', a: '[Da definire per ogni programma.]' },
@@ -99,7 +110,7 @@ export const C = {
     { q: 'Posso chiedere il rimborso?', a: '[Inserire la politica di rimborso.]' }
   ],
 
-  ctaTitle: 'Il prossimo passo lo fai oggi',
+  ctaTitle: ['Il prossimo passo', 'lo fai oggi'],
   ctaBtn: 'Scegli il programma',
   rights: 'Tutti i diritti riservati.',
   footLinks: ['Privacy', 'Termini e condizioni', 'Contatti'],
