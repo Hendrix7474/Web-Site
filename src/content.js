@@ -6,6 +6,33 @@ export const C = {
     { href: '#faq', label: 'Domande' }
   ],
   login: 'Area riservata',
+  heroPhoto: '[Foto in bianco e nero: atleta in azione]',
+  heroStats: [
+    { n: '4', l: 'basi del metodo' },
+    { n: '100%', l: 'esercizi con video' },
+    { n: '1', l: 'app per tutto' }
+  ],
+
+  appTitle: 'Tutto il programma, in tasca',
+  appText: 'Ogni seduta è già pronta: esercizi, serie, recuperi e il video di come si fa. Spunti, avanzi, vedi i progressi.',
+  appFeatures: ['Scheda del giorno sempre pronta', 'Video di ogni esercizio', 'Timer di recupero integrato', 'Progressi settimana dopo settimana'],
+
+  loginTitle: 'Accedi',
+  loginText: 'Entra nell’area riservata OTS',
+  loginApp: 'Apri l’app OTS',
+  loginOr: 'oppure accedi con l’email',
+  loginEmail: 'Email',
+  loginPass: 'Password',
+  loginPassPh: 'Inserisci la password',
+  loginRemember: 'Ricordami',
+  loginForgot: 'Password dimenticata?',
+  loginBtn: 'Accedi',
+  loginNo: 'Non hai ancora un account?',
+  loginBuy: 'Scegli un programma',
+  loginError: 'Controlla email e password.',
+  loginPreview: 'Anteprima: l’accesso verrà collegato all’area riservata quando il sito sarà online.',
+  close: 'Chiudi',
+
   navCta: 'Trova il tuo programma',
 
   heroKicker: 'Preparazione atletica giovanile',
