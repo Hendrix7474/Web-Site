@@ -1,130 +1,107 @@
-export const PALETTES = [
-  { name: 'Carbone + Arancio', bg: '#111315', surface: '#1A1D20', fg: '#F2F1EC', muted: '#A9ADB0', accent: '#FF5A1F', accentFg: '#111315', line: '#2D3236' },
-  { name: 'Navy + Giallo', bg: '#0C1A33', surface: '#12264A', fg: '#F3F5FA', muted: '#AEBBD3', accent: '#FFC21A', accentFg: '#0C1A33', line: '#27406B' },
-  { name: 'Chiaro + Cobalto', bg: '#F3F4F1', surface: '#FFFFFF', fg: '#0F1115', muted: '#4B5059', accent: '#2340FF', accentFg: '#FFFFFF', line: '#D9DBD5' }
-];
+export const C = {
+  nav: [
+    { href: '#metodo', label: 'Metodo' },
+    { href: '#programmi', label: 'Programmi' },
+    { href: '#team', label: 'Team' },
+    { href: '#faq', label: 'Domande' }
+  ],
+  login: 'Area riservata',
+  navCta: 'Trova il tuo programma',
 
-export const TEXT = {
-  it: {
-    previewLabel: 'Anteprima palette',
-    navPrograms: 'Programmi', navMethod: 'Metodo', navTeam: 'Team', navLogin: 'Area riservata', navCta: 'Scegli il programma',
-    heroEyebrow: 'Preparazione atletica giovanile',
-    heroTitle: 'Allena oggi l’atleta che vuoi essere domani',
-    heroText: 'Programmi di preparazione atletica costruiti per giovani atleti: forza, velocità e prevenzione degli infortuni, con un piano chiaro da seguire ogni settimana.',
-    heroCta: 'Scegli il tuo programma', heroCta2: 'Fai il quiz',
-    heroMedia: '[Foto o video di un allenamento]',
-    appKicker: 'Area riservata', appTitle: 'Settimana 3 · Giorno 2', appEx1: 'Salti in alto', appEx2: 'Squat con bilanciere', appDone: 'Seduta completata al 42%',
-    stats: [
-      { n: '[00]+', label: '[Atleti seguiti]' },
-      { n: '[00]', label: '[Programmi disponibili]' },
-      { n: '[00]', label: '[Sport coperti]' },
-      { n: '[00]', label: '[Anni di esperienza]' }
+  heroKicker: 'Preparazione atletica giovanile',
+  heroTitle: ['Allena oggi', 'l’atleta', 'di domani'],
+  heroText: 'Programmi di forza, velocità e prevenzione degli infortuni pensati per chi sta ancora crescendo. Ogni settimana sai cosa fare, come farlo e perché.',
+  heroCta: 'Scegli il programma',
+  heroCta2: 'Fai il quiz in un minuto',
+
+  app: {
+    week: 'Settimana 3',
+    day: 'Giorno 2 di 3',
+    title: 'Forza e salti',
+    rest: 'Recupero',
+    items: [
+      { name: 'Salti sul box', sets: '4 × 5' },
+      { name: 'Squat con bilanciere', sets: '3 × 8' },
+      { name: 'Sprint 10 m', sets: '6 ripetute' },
+      { name: 'Plank laterale', sets: '3 × 30 s' }
     ],
-    ticker: ['Forza', 'Velocità', 'Agilità', 'Prevenzione infortuni', 'Mobilità', 'Crescita nel tempo'],
-    progEyebrow: 'Programmi', progTitle: 'Scegli il percorso giusto',
-    progText: 'Ogni programma si acquista una volta e si segue dall’area riservata e dall’app, con video degli esercizi e schede aggiornate.',
-    featured: 'In evidenza', buy: 'Acquista',
-    progNote: 'Nomi, contenuti e prezzi sono segnaposto da sostituire con i vostri programmi reali.',
-    programs: [
-      { level: '[Fascia d’età]', name: '[Programma 1]', desc: '[Una frase che spiega a chi è rivolto e che risultato porta.]', features: ['[X] settimane · [Y] sedute a settimana', 'Video dimostrativo di ogni esercizio', 'Accesso da app e area riservata'], price: '[€00]', featured: false },
-      { level: '[Fascia d’età]', name: '[Programma 2]', desc: '[Una frase che spiega a chi è rivolto e che risultato porta.]', features: ['[X] settimane · [Y] sedute a settimana', 'Video dimostrativo di ogni esercizio', 'Accesso da app e area riservata'], price: '[€00]', featured: true },
-      { level: '[Fascia d’età]', name: '[Programma 3]', desc: '[Una frase che spiega a chi è rivolto e che risultato porta.]', features: ['[X] settimane · [Y] sedute a settimana', 'Video dimostrativo di ogni esercizio', 'Accesso da app e area riservata'], price: '[€00]', featured: false }
-    ],
-    quizEyebrow: 'Non sai da dove partire?', quizTitle: 'Trova il programma giusto in un minuto',
-    quizText: 'Poche domande su età, sport e obiettivi. Alla fine ti indichiamo il programma più adatto.',
-    quizParent: 'Sono un genitore', quizAthlete: 'Sono un atleta',
-    methEyebrow: 'Il metodo OTS', methTitle: 'Quattro basi per crescere bene',
-    pillars: [
-      { name: 'Forza', text: 'Una base solida, costruita con tecnica e carichi adatti all’età.' },
-      { name: 'Velocità e agilità', text: 'Scatto, cambi di direzione e reattività, allenati con metodo.' },
-      { name: 'Prevenzione infortuni', text: 'Mobilità e stabilità per allenarsi più a lungo e meglio.' },
-      { name: 'Crescita nel tempo', text: 'Progressioni chiare, pensate per anni di sviluppo e non per una sola stagione.' }
-    ],
-    teamEyebrow: 'Chi siamo', teamTitle: 'Il team OTS', photo: '[Foto]',
-    team: [
-      { name: '[Nome Cognome]', role: '[Ruolo · specializzazione]' },
-      { name: '[Nome Cognome]', role: '[Ruolo · specializzazione]' },
-      { name: '[Nome Cognome]', role: '[Ruolo · specializzazione]' }
-    ],
-    testEyebrow: 'Risultati', testTitle: 'Cosa dicono atleti e genitori',
-    quotes: [
-      { text: '[Testimonianza di un genitore, con un risultato concreto.]', who: '[Nome · genitore di un atleta U00]' },
-      { text: '[Testimonianza di un atleta, con un risultato concreto.]', who: '[Nome · sport · età]' },
-      { text: '[Testimonianza di un allenatore o di una società.]', who: '[Nome · società]' }
-    ],
-    soon: 'In arrivo', proTitle: 'Tecnica e professionisti',
-    proText: 'Stiamo preparando percorsi dedicati alla parte tecnica e agli atleti professionisti. Lascia la tua email per essere avvisato per primo.',
-    proLabel: 'La tua email', proBtn: 'Avvisami', proSent: 'Fatto', proError: 'Inserisci un indirizzo email valido, per esempio nome@email.it.',
-    proDone: 'Anteprima: il modulo sarà collegato al servizio email quando il sito sarà pubblicato.',
-    faqTitle: 'Domande frequenti',
-    faq: [
-      { q: 'Come ricevo il programma dopo l’acquisto?', a: 'Subito dopo il pagamento ricevi l’accesso all’area riservata e all’app, dove trovi schede e video.' },
-      { q: 'Per che età sono i programmi?', a: '[Da definire per ogni programma.]' },
-      { q: 'Serve la palestra?', a: '[Da definire per ogni programma: attrezzatura necessaria.]' },
-      { q: 'Posso chiedere il rimborso?', a: '[Inserire la politica di rimborso.]' }
-    ],
-    ctaTitle: 'Inizia oggi il percorso',
-    rights: 'Tutti i diritti riservati.', terms: 'Termini e condizioni', contact: 'Contatti'
+    done: 'completata'
   },
-  en: {
-    previewLabel: 'Palette preview',
-    navPrograms: 'Programs', navMethod: 'Method', navTeam: 'Team', navLogin: 'Member area', navCta: 'Choose a program',
-    heroEyebrow: 'Youth athletic development',
-    heroTitle: 'Train today for the athlete you want to be tomorrow',
-    heroText: 'Athletic development programs built for young athletes: strength, speed and injury prevention, with a clear plan to follow every week.',
-    heroCta: 'Choose your program', heroCta2: 'Take the quiz',
-    heroMedia: '[Training photo or video]',
-    appKicker: 'Member area', appTitle: 'Week 3 · Day 2', appEx1: 'Box jumps', appEx2: 'Barbell squat', appDone: 'Session 42% complete',
-    stats: [
-      { n: '[00]+', label: '[Athletes coached]' },
-      { n: '[00]', label: '[Programs available]' },
-      { n: '[00]', label: '[Sports covered]' },
-      { n: '[00]', label: '[Years of experience]' }
-    ],
-    ticker: ['Strength', 'Speed', 'Agility', 'Injury prevention', 'Mobility', 'Long-term growth'],
-    progEyebrow: 'Programs', progTitle: 'Pick the right path',
-    progText: 'Buy a program once and follow it from the member area and the app, with exercise videos and updated plans.',
-    featured: 'Featured', buy: 'Buy now',
-    progNote: 'Names, contents and prices are placeholders to replace with your real programs.',
-    programs: [
-      { level: '[Age group]', name: '[Program 1]', desc: '[One sentence on who it is for and what result it delivers.]', features: ['[X] weeks · [Y] sessions per week', 'Demo video for every exercise', 'Access from app and member area'], price: '[€00]', featured: false },
-      { level: '[Age group]', name: '[Program 2]', desc: '[One sentence on who it is for and what result it delivers.]', features: ['[X] weeks · [Y] sessions per week', 'Demo video for every exercise', 'Access from app and member area'], price: '[€00]', featured: true },
-      { level: '[Age group]', name: '[Program 3]', desc: '[One sentence on who it is for and what result it delivers.]', features: ['[X] weeks · [Y] sessions per week', 'Demo video for every exercise', 'Access from app and member area'], price: '[€00]', featured: false }
-    ],
-    quizEyebrow: 'Not sure where to start?', quizTitle: 'Find the right program in a minute',
-    quizText: 'A few questions about age, sport and goals. At the end we point you to the best fit.',
-    quizParent: 'I am a parent', quizAthlete: 'I am an athlete',
-    methEyebrow: 'The OTS method', methTitle: 'Four foundations for growing well',
-    pillars: [
-      { name: 'Strength', text: 'A solid base, built with technique and loads suited to age.' },
-      { name: 'Speed and agility', text: 'Sprint, change of direction and reactivity, trained with method.' },
-      { name: 'Injury prevention', text: 'Mobility and stability to train longer and better.' },
-      { name: 'Long-term growth', text: 'Clear progressions designed for years of development, not a single season.' }
-    ],
-    teamEyebrow: 'About us', teamTitle: 'The OTS team', photo: '[Photo]',
-    team: [
-      { name: '[First Last]', role: '[Role · specialty]' },
-      { name: '[First Last]', role: '[Role · specialty]' },
-      { name: '[First Last]', role: '[Role · specialty]' }
-    ],
-    testEyebrow: 'Results', testTitle: 'What athletes and parents say',
-    quotes: [
-      { text: '[A parent testimonial with a concrete result.]', who: '[Name · parent of a U00 athlete]' },
-      { text: '[An athlete testimonial with a concrete result.]', who: '[Name · sport · age]' },
-      { text: '[A coach or club testimonial.]', who: '[Name · club]' }
-    ],
-    soon: 'Coming soon', proTitle: 'Technical and professionals',
-    proText: 'We are preparing paths for technical development and professional athletes. Leave your email to be the first to know.',
-    proLabel: 'Your email', proBtn: 'Notify me', proSent: 'Done', proError: 'Enter a valid email address, for example name@email.com.',
-    proDone: 'Preview: the form will be connected to the email service when the site goes live.',
-    faqTitle: 'Frequently asked questions',
-    faq: [
-      { q: 'How do I receive the program after buying?', a: 'Right after payment you get access to the member area and the app, where you find plans and videos.' },
-      { q: 'What ages are the programs for?', a: '[To be defined for each program.]' },
-      { q: 'Do I need a gym?', a: '[To be defined for each program: equipment needed.]' },
-      { q: 'Can I get a refund?', a: '[Insert refund policy.]' }
-    ],
-    ctaTitle: 'Start the journey today',
-    rights: 'All rights reserved.', terms: 'Terms and conditions', contact: 'Contact'
-  }
+
+  manifesto: 'Non alleniamo per una stagione. Costruiamo atleti più forti, più veloci e più resistenti agli infortuni, un anno dopo l’altro, con carichi adatti alla loro età.',
+  photoBand: '[Foto o video: allenamento di gruppo]',
+
+  methodTitle: 'Il metodo OTS',
+  methodText: 'Quattro basi che lavorano insieme. Ognuna ha il suo colore, lo stesso che trovi nei programmi e nell’app.',
+  pillars: [
+    { name: 'Forza', color: 'red', text: 'Una base solida, costruita con la tecnica prima del carico. I pesi crescono solo quando il movimento è pulito.', detail: 'Squat, spinte, trazioni, salti' },
+    { name: 'Velocità e agilità', color: 'blue', text: 'Scatto, frenata e cambi di direzione allenati con metodo, perché in partita la velocità serve in tutte le direzioni.', detail: 'Partenze, accelerazioni, cambi di direzione' },
+    { name: 'Prevenzione', color: 'yellow', text: 'Mobilità e stabilità per ginocchia, caviglie e schiena. Meno stop durante l’anno vuol dire più allenamento che conta.', detail: 'Mobilità, equilibrio, core' },
+    { name: 'Crescita nel tempo', color: 'green', text: 'Progressioni pensate per anni di sviluppo. Ogni fase prepara la successiva, senza bruciare le tappe.', detail: 'Piani per fasce d’età' }
+  ],
+
+  progTitle: 'Scegli il percorso',
+  progText: 'Si acquista una volta e si segue dall’app e dall’area riservata, con il video di ogni esercizio.',
+  featured: 'Il più scelto',
+  buy: 'Acquista',
+  progNote: 'Nomi, contenuti e prezzi sono segnaposto da sostituire con i vostri programmi.',
+  programs: [
+    { level: '[Fascia d’età]', name: '[Programma 1]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: false },
+    { level: '[Fascia d’età]', name: '[Programma 2]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: true },
+    { level: '[Fascia d’età]', name: '[Programma 3]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: false }
+  ],
+
+  quizTitle: 'Non sai da dove partire?',
+  quizText: 'Tre domande e ti indichiamo il programma più adatto.',
+  quiz: [
+    { q: 'Chi sta compilando?', options: ['Sono un genitore', 'Sono un atleta'] },
+    { q: 'Quanti anni ha l’atleta?', options: ['Meno di 12', 'Da 12 a 15', '16 o più'] },
+    { q: 'Cosa vuoi migliorare per primo?', options: ['Forza', 'Velocità e agilità', 'Prevenzione infortuni'] }
+  ],
+  quizStep: 'Domanda',
+  quizOf: 'di',
+  quizBack: 'Indietro',
+  quizResult: 'Il programma per voi',
+  quizPick: 'Ti consigliamo',
+  quizRestart: 'Rifai il quiz',
+  quizNote: 'Anteprima: le regole che abbinano risposte e programmi sono da definire insieme.',
+
+  teamTitle: 'Chi ti allena',
+  teamText: 'Preparatori che lavorano ogni giorno con atleti giovani.',
+  photo: '[Foto]',
+  team: [
+    { name: '[Nome Cognome]', role: '[Ruolo e specializzazione]' },
+    { name: '[Nome Cognome]', role: '[Ruolo e specializzazione]' },
+    { name: '[Nome Cognome]', role: '[Ruolo e specializzazione]' }
+  ],
+
+  quotesTitle: 'Cosa dicono atleti e genitori',
+  quotes: [
+    { text: '[Testimonianza di un genitore, con un risultato concreto.]', who: '[Nome, genitore di un atleta U00]' },
+    { text: '[Testimonianza di un atleta, con un risultato concreto.]', who: '[Nome, sport, età]' },
+    { text: '[Testimonianza di un allenatore o di una società.]', who: '[Nome, società]' }
+  ],
+
+  proTag: 'In arrivo',
+  proTitle: 'Tecnica e professionisti',
+  proText: 'Stiamo preparando percorsi per la parte tecnica e per gli atleti professionisti. Lascia la tua email e ti avvisiamo appena aprono.',
+  proLabel: 'La tua email',
+  proBtn: 'Avvisami',
+  proSent: 'Iscritto',
+  proError: 'Inserisci un indirizzo email valido, per esempio nome@email.it.',
+  proDone: 'Anteprima: il modulo verrà collegato al servizio email quando il sito sarà online.',
+
+  faqTitle: 'Domande frequenti',
+  faq: [
+    { q: 'Come ricevo il programma dopo l’acquisto?', a: 'Subito dopo il pagamento ricevi l’accesso all’area riservata e all’app, dove trovi schede e video.' },
+    { q: 'Per che età sono i programmi?', a: '[Da definire per ogni programma.]' },
+    { q: 'Serve la palestra?', a: '[Da definire per ogni programma: attrezzatura necessaria.]' },
+    { q: 'Posso chiedere il rimborso?', a: '[Inserire la politica di rimborso.]' }
+  ],
+
+  ctaTitle: 'Il prossimo passo lo fai oggi',
+  ctaBtn: 'Scegli il programma',
+  rights: 'Tutti i diritti riservati.',
+  footLinks: ['Privacy', 'Termini e condizioni', 'Contatti'],
+  footContact: '[EMAIL]  [INSTAGRAM]'
 };
