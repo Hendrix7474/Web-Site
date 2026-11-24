@@ -1,10 +1,63 @@
 export const C = {
-  nav: [
-    { href: '#metodo', label: 'Metodo' },
-    { href: '#programmi', label: 'Programmi' },
-    { href: '#team', label: 'Team' },
-    { href: '#faq', label: 'Domande' }
+  // Main menu. Each group: a top link (its own page) plus the dropdown items.
+  menu: [
+    { label: 'Programmi online', href: 'programmi.html', page: 'programmi', items: [
+      { label: '[Programma 1]', href: 'programma-1.html' },
+      { label: '[Programma 2]', href: 'programma-2.html' },
+      { label: '[Programma 3]', href: 'programma-3.html' },
+      { label: 'Tutti i programmi', href: 'programmi.html', all: true }
+    ] },
+    { label: 'Metodo', href: 'metodo.html', page: 'metodo', items: [
+      { label: 'Il metodo OTS', href: 'metodo.html' },
+      { label: 'Le quattro basi', href: 'metodo.html#basi' },
+      { label: 'Trova il tuo programma', href: 'programmi.html#quiz' }
+    ] },
+    { label: 'Chi siamo', href: 'chi-siamo.html', page: 'chi-siamo', items: [
+      { label: 'Il team', href: 'chi-siamo.html#team' },
+      { label: 'Cosa dicono di noi', href: 'chi-siamo.html#testimonianze' }
+    ] },
+    { label: 'In arrivo', href: 'pro.html', page: 'pro' },
+    { label: 'Domande', href: 'domande.html', page: 'domande' }
   ],
+  loginHref: '#area-riservata',
+  menuOpen: 'Menu',
+  menuClose: 'Chiudi il menu',
+  subOpen: 'Apri il sottomenu',
+  home: 'Home',
+
+  pages: {
+    programmi: { slash: '/ Programmi online', title: 'Tutti i programmi', text: 'Percorsi completi da seguire dall’app, con il video di ogni esercizio. Filtra per obiettivo o fai il quiz.' },
+    metodo: { slash: '/ Metodo', title: 'Il metodo OTS', text: 'Quattro basi che lavorano insieme, con carichi adatti all’età e progressioni pensate per anni.' },
+    'chi-siamo': { slash: '/ Chi siamo', title: 'Chi ti allena', text: 'Preparatori che lavorano ogni giorno con atleti giovani, le loro famiglie e le società.' },
+    pro: { slash: '/ In arrivo', title: 'Tecnica e pro', text: 'Nuovi percorsi per la parte tecnica e per gli atleti professionisti.' },
+    domande: { slash: '/ Domande', title: 'Domande frequenti', text: 'Acquisto, app, età e attrezzatura. Se non trovi la risposta, scrivici.' }
+  },
+
+  filterAll: 'Tutti',
+  filterLabel: 'Filtra per obiettivo',
+  goals: ['Forza', 'Velocità', 'Prevenzione'],
+  details: 'Scopri il programma',
+  backAll: '← Tutti i programmi',
+  includesTitle: 'Cosa trovi dentro',
+  includes: ['Schede settimanali con serie, ripetizioni e recuperi', 'Video di ogni esercizio, spiegato passo per passo', 'App e area riservata, sempre con te', 'Progressione dei carichi pensata per l’età'],
+  forWhoTitle: 'Per chi è',
+  forWho: ['[Età e livello dell’atleta]', '[Sport praticati]', '[Attrezzatura necessaria]'],
+  weeksTitle: 'Come è fatto',
+  phases: [
+    { name: 'Fase 1', weeks: '[Settimane 1–4]', text: '[Obiettivo della fase: tecnica e basi.]' },
+    { name: 'Fase 2', weeks: '[Settimane 5–8]', text: '[Obiettivo della fase: carico e potenza.]' },
+    { name: 'Fase 3', weeks: '[Settimane 9–12]', text: '[Obiettivo della fase: velocità e trasferimento in campo.]' }
+  ],
+  onetime: 'Pagamento unico, accesso subito',
+  otherProgs: 'Altri programmi',
+  contactTitle: 'Non hai trovato la risposta?',
+  contactText: 'Scrivici e ti rispondiamo entro un giorno lavorativo.',
+  contactMail: '[EMAIL]',
+  homeProgTitle: 'Programmi online',
+  homeProgText: 'Tre percorsi da seguire dall’app. Scegli quello giusto o confrontali tutti.',
+  homeAll: 'Tutti i programmi',
+  homeMethodLink: 'Scopri il metodo',
+  homeTeamLink: 'Conosci il team',
   login: 'Area riservata',
   navCta: 'Trova il tuo programma',
 
@@ -54,9 +107,9 @@ export const C = {
   buy: 'Acquista',
   progNote: 'Nomi, contenuti e prezzi sono segnaposto da sostituire con i vostri programmi.',
   programs: [
-    { level: '[Fascia d’età]', name: '[Programma 1]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: false },
-    { level: '[Fascia d’età]', name: '[Programma 2]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: true },
-    { level: '[Fascia d’età]', name: '[Programma 3]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: false }
+    { slug: 'programma-1', goal: 'Forza', weeks: '[12 settimane]', level: '[Fascia d’età]', name: '[Programma 1]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: false },
+    { slug: 'programma-2', goal: 'Velocità', weeks: '[12 settimane]', level: '[Fascia d’età]', name: '[Programma 2]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: true },
+    { slug: 'programma-3', goal: 'Prevenzione', weeks: '[8 settimane]', level: '[Fascia d’età]', name: '[Programma 3]', desc: '[Per chi è e che risultato porta, in una frase.]', features: ['[X] settimane, [Y] sedute a settimana', 'Video di ogni esercizio', 'App e area riservata'], price: '[€00]', featured: false }
   ],
 
   quizTitle: 'Non sai da dove partire?',
